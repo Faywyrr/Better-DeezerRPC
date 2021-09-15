@@ -15,6 +15,7 @@ No need for additional installation, a small batch script is enough!
 
 
 **Download last release [here](https://github.com/Faywyrr/Better-DeezerRPC/releases/).**
+__NodeJs is required!__
 
 To install it, you only need to run the **install.bat** when Deezer is closed.
 If you have changed the location of the application you can indicate it in the file :
