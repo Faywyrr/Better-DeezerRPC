@@ -8,6 +8,8 @@ Better Deezer-RPC is the only Rich Presence for Deezer to integrate **DIRECTLY**
 ![](https://media.discordapp.net/attachments/418128129731592192/887781152461574144/unknown.png)
 </br> 
 ![](https://media.discordapp.net/attachments/418128129731592192/887781383794217030/unknown.png)
+</br> 
+![](https://media.discordapp.net/attachments/418128129731592192/890659915079745637/unknown.png)
 
 ## Installation
 
@@ -16,7 +18,6 @@ Better Deezer-RPC is the only Rich Presence for Deezer to integrate **DIRECTLY**
 
 
 **Download last release [here](https://github.com/Faywyrr/Better-DeezerRPC/releases/).**
-</br>__Node.js is required!__
 
 To install it, you only need to run the **install.bat** when Deezer is closed.
 </br>If you have changed the location of the application you can indicate it in the file :
