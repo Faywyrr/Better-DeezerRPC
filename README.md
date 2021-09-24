@@ -17,7 +17,7 @@ Better Deezer-RPC is the only Rich Presence for Deezer to integrate **DIRECTLY**
 </br>We advise you to download the Windows application [here](https://www.deezer.com/desktop/download?platform=win32&architecture=x86).*
 
 
-**Download last release [here](https://github.com/Faywyrr/Better-DeezerRPC/releases/).**
+**Download last release [here](https://github.com/Faywyrr/Better-DeezerRPC/releases/latest/).**
 
 To install it, you only need to run the **install.bat** when Deezer is closed.
 </br>If you have changed the location of the application you can indicate it in the file :
