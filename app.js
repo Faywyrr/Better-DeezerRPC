@@ -58,8 +58,8 @@ function setupRPC() {
     }
 
     const seek = dzPlayer.control.seek;
-    dzPlayer.control.seek = function(args) {
-        seek.apply(this, [args]);
+    dzPlayer.control.seek = function() {
+        seek.apply(this, arguments);
         setTimeout(onSeek, 1);
     }
 
@@ -73,6 +73,12 @@ function setupRPC() {
     dzPlayer.control.nextSong = function() {
         nextSong.apply();
         setTimeout(onNextSong, 1);
+    }
+
+    const setTrackList = dzPlayer.setTrackList;
+    dzPlayer.setTrackList = function() {
+        setTrackList.apply(this, arguments);
+        setTimeout(onSelectSong, 1);
     }
 }
 
@@ -98,6 +104,11 @@ function onPrevSong() {
 
 
 function onNextSong() {
+    updateRPC(false);
+}
+
+
+function onSelectSong() {
     updateRPC(false);
 }
 
