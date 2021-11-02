@@ -47,13 +47,13 @@ function setupRPC() {
 
     const play = dzPlayer.control.play;
     dzPlayer.control.play = function() {
-        play.apply();
+        play.apply(this, arguments);
         setTimeout(onPlay, 1);
     }
 
     const pause = dzPlayer.control.pause;
     dzPlayer.control.pause = function() {
-        pause.apply();
+        pause.apply(this, arguments);
         setTimeout(onPause, 1);
     }
 
@@ -65,13 +65,13 @@ function setupRPC() {
 
     const prevSong = dzPlayer.control.prevSong;
     dzPlayer.control.prevSong = function() {
-        prevSong.apply();
+        prevSong.apply(this, arguments);
         setTimeout(onPrevSong, 1);
     }
 
     const nextSong = dzPlayer.control.nextSong;
     dzPlayer.control.nextSong = function() {
-        nextSong.apply();
+        nextSong.apply(this, arguments);
         setTimeout(onNextSong, 1);
     }
 
