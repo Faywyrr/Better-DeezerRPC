@@ -21,31 +21,29 @@ npx asar extract app.asar temp
 
 
 echo Copying node modules...
-mkdir "$APP/resources"
-mkdir "$APP/resources/temp"
-mkdir "$APP/resources/temp/node_modules"
-cp "$MODULES" "$APP/resources/temp/node_modules/" -r
+mkdir -p "$APP/temp/node_modules"
+cp "$MODULES" "$APP/temp/node_modules/" -r
 
 
 
 echo Edit javascript file...
 
-mkdir "$APP/resources/temp/build"
-cd "$APP/resources/temp/build"
+mkdir "$APP/temp/build"
+cd "$APP/temp/build"
 cat $JS >> renderer.js
 
 
 
 echo Pack Asar File...
 
-cd "$APP/resources/"
+cd "$APP/"
 npx asar pack temp app.asar
 
 
 
 echo Delete temp folder...
 
-rm -r "$APP/resources/temp"
+rm -rf "$APP/temp/"
 
 
 

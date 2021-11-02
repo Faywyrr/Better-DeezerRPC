@@ -3,11 +3,9 @@
 APP="/usr/share/deezer"
 
 
-//Code
-
 echo "Restore Asar backup..."
 
-cd "$APP/resources"
+cd "$APP"
 cp backup.asar app.asar
 
 echo "Delete Asar backup..."
@@ -15,4 +13,4 @@ echo "Delete Asar backup..."
 rm backup.asar
 
 echo "Finish !"
-echo "If it didn't work, you should re-try using 'sudo ./install.sh'"
+echo "If it didn't work, you should re-try using 'sudo ./remove.sh'"
