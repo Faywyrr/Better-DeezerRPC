@@ -4,20 +4,23 @@
 
 set App=%LocalAppdata%\Programs\deezer-desktop
 set js=%cd%\app.js
+set node=%cd%\node
 set modules=%cd%\node_modules
 
 
 :: Code
 
-echo Create Asar Backup...
+if not exist %App%\resources\backup.asar (
+	echo Create Asar Backup...
 
-cd %App%\resources
-xcopy app.asar backup.asar* /Y
-cls
+	xcopy %App%\resources\app.asar %App%\resources\backup.asar* /Y
+	cls
+)
+
 
 echo Extract Asar File...
 
-cmd /c npx asar extract app.asar temp
+cmd /c %node%\npx asar extract %App%\resources\app.asar %App%\resources\temp\
 cls
 
 
@@ -29,15 +32,13 @@ cls
 
 echo Edit javascript file...
 
-cd %App%\resources\temp\build
-type %js% >> renderer.js
+type %js% >> %App%\resources\temp\build\renderer.js
 cls
 
 
 echo Pack Asar File...
 
-cd %App%\resources\
-cmd /c npx asar pack temp app.asar
+cmd /c %node%\npx asar pack %App%\resources\temp\ %App%\resources\app.asar
 cls
 
 

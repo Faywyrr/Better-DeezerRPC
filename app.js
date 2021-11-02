@@ -1,13 +1,38 @@
+const { remote } = require('electron');
+
 var rpc;
+var playPause;
+var sliderTime;
 
-setTimeout(function() {
+const clientId = '887417020730204160';
 
-    /* Constants */
+var loaded = false;
+var enable = true;
 
-    const playPause = document.getElementsByClassName("is-highlight")[0];
-    const sliderTime = document.getElementsByClassName("slider-counter-max")[0];
+window.onload = setupRPC;
 
-    const clientId = '887417020730204160';
+function setupRPC() {
+
+    if(loaded) return;
+    loaded = true;
+
+    /* Menu */
+
+    const menu = remote.Menu.getApplicationMenu();
+    const item = new remote.MenuItem({ type: 'checkbox', label: 'Discord RPC', checked: 'true', click: (menuItem) => { toggleRPC(menuItem.checked) }});
+
+    menu.append(item);
+
+    // Remove deezer old ipc listener
+    remote.ipcMain.removeAllListeners('channel-menu-show');
+
+    // Add new listener
+    remote.ipcMain.on('channel-menu-show', ((event, options) => {
+        const focusedWindow = remote.BrowserWindow.getFocusedWindow();
+        if (!focusedWindow) return;
+        const browserView = focusedWindow.getBrowserView();
+        browserView && (browserView.webContents.focus(), menu.popup(options))
+    }));
 
 
     /* Rich Presence */
@@ -17,37 +42,83 @@ setTimeout(function() {
     rpc = new discordrpc.Client({ transport: 'ipc' });
     rpc.login({ clientId });
 
-    rpc.on("ready", () => {
-        updateRPC(playPause.getAttribute('aria-label') !== 'Pause');
-    });
-
 
     /* Events */
 
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if(mutation.attributeName === 'aria-label')
-                setTimeout(function() {
-                    updateRPC(playPause.getAttribute('aria-label') !== 'Pause');
-                }, 1);
-            else
-                updateRPC();
-        });
-    });
+    const play = dzPlayer.control.play;
+    dzPlayer.control.play = function() {
+        play.apply();
+        setTimeout(onPlay, 1);
+    }
 
-    observer.observe(playPause, { attributes: true, attributeFilter: ['aria-label'] });
-    observer.observe(sliderTime, { characterData: true, attributes: false, childList: false, subtree: true });
+    const pause = dzPlayer.control.pause;
+    dzPlayer.control.pause = function() {
+        pause.apply();
+        setTimeout(onPause, 1);
+    }
 
-}, 10000);
+    const seek = dzPlayer.control.seek;
+    dzPlayer.control.seek = function() {
+        seek.apply(this, arguments);
+        setTimeout(onSeek, 1);
+    }
 
-function updateRPC(pause=false) {
+    const prevSong = dzPlayer.control.prevSong;
+    dzPlayer.control.prevSong = function() {
+        prevSong.apply();
+        setTimeout(onPrevSong, 1);
+    }
 
-    const track = document.getElementsByClassName("track-link");
-    const current = document.getElementsByClassName("slider-counter-current")[0].innerHTML.split(":");
-    const max = document.getElementsByClassName("slider-counter-max")[0].innerHTML.split(":");
+    const nextSong = dzPlayer.control.nextSong;
+    dzPlayer.control.nextSong = function() {
+        nextSong.apply();
+        setTimeout(onNextSong, 1);
+    }
 
-    const song = track[0].innerHTML;
-    const artist = track[1].innerHTML;
+    const setTrackList = dzPlayer.setTrackList;
+    dzPlayer.setTrackList = function() {
+        setTrackList.apply(this, arguments);
+        setTimeout(onSelectSong, 1);
+    }
+}
+
+
+function onPlay() {
+    updateRPC(false);
+}
+
+
+function onPause() {
+    updateRPC(true);
+}
+
+
+function onSeek() {
+    updateRPC(false);
+}
+
+
+function onPrevSong() {
+    updateRPC(false);
+}
+
+
+function onNextSong() {
+    updateRPC(false);
+}
+
+
+function onSelectSong() {
+    updateRPC(false);
+}
+
+
+function updateRPC(pause=!dzPlayer.playing) {
+
+    if(!enable) return;
+
+    const song = dzPlayer.getSongTitle();
+    const artist = dzPlayer.getArtistName();
 
     if(pause)
         
@@ -63,8 +134,7 @@ function updateRPC(pause=false) {
 
     else {
 
-        const seconds = (parseInt(max[0]) * 60 + parseInt(max[1])) - (parseInt(current[0]) * 60 + parseInt(current[1]));
-        const endTimestamp = Date.now() + seconds * 1000;
+        const endTimestamp = Date.now() + dzPlayer.getRemainingTime() * 1000;
 
         activity = {
             details: song,
@@ -72,7 +142,7 @@ function updateRPC(pause=false) {
             largeImageKey: 'logo',
             largeImageText: 'Deezer',
             smallImageKey: 'play',
-            smallImageText: 'Listening',
+            smallImageText: /*'Listening'*/song,
             endTimestamp,
             instance: true
         }
@@ -80,4 +150,19 @@ function updateRPC(pause=false) {
 
     rpc.setActivity(activity);
     
+}
+
+
+function toggleRPC(b) {
+     isEnable = b || !enable;
+
+    if(isEnable) {
+        enable = true;
+
+        updateRPC();
+    } else {
+        enable = false;
+
+        rpc.clearActivity();
+    }
 }
