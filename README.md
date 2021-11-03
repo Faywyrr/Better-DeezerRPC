@@ -1,7 +1,7 @@
 # Better Deezer-RPC
 
 Better Deezer-RPC is the only Rich Presence for Deezer to integrate **DIRECTLY** into the default Deezer desktop application.
-</br>No need for additional installation, a small batch script is enough!
+</br>No need for additional installation, a small script is enough!
 
 ## Example
 
@@ -17,7 +17,7 @@ Better Deezer-RPC is the only Rich Presence for Deezer to integrate **DIRECTLY**
 </br>We advise you to download the Windows application [here](https://www.deezer.com/desktop/download?platform=win32&architecture=x86).*
 
 **Download last release [here](https://github.com/Faywyrr/Better-DeezerRPC/releases/latest/).**
-It supports Windows and Linux (you must have nodejs installed for linux).
+It supports Windows and Linux (you must have NodeJS installed for Linux).
 
 **For installation, please see the release!**
 
